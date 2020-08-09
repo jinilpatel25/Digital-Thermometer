@@ -1,0 +1,398 @@
+                 -1   $MODLP51
+0000              1   ;--------------------------------------------------------
+0000              2   ; Special Function Registers
+0000              3   ;--------------------------------------------------------
+0000              4   ACC            DATA 0xe0
+0000              5   B              DATA 0xf0
+0000              6   PSW            DATA 0xd0
+0000              7   SP             DATA 0x81
+0000              8   SPX            DATA 0xef
+0000              9   DPL            DATA 0x82
+0000             10   DPH            DATA 0x83
+0000             11   DPLB           DATA 0xd4
+0000             12   DPHB           DATA 0xd5
+0000             13   PAGE           DATA 0xf6
+0000             14   AX             DATA 0xe1
+0000             15   BX             DATA 0xf7
+0000             16   DSPR           DATA 0xe2
+0000             17   FIRD           DATA 0xe3
+0000             18   MACL           DATA 0xe4
+0000             19   MACH           DATA 0xe5
+0000             20   PCON           DATA 0x87
+0000             21   AUXR           DATA 0x8e
+0000             22   AUXR1          DATA 0xa2
+0000             23   DPCF           DATA 0xa1
+0000             24   CKRL           DATA 0x97
+0000             25   CKCKON0        DATA 0x8f
+0000             26   CKCKON1        DATA 0xaf
+0000             27   CKSEL          DATA 0x85
+0000             28   CLKREG         DATA 0xae
+0000             29   OSCCON         DATA 0x85
+0000             30   IE             DATA 0xa8
+0000             31   IEN0           DATA 0xa8
+0000             32   IEN1           DATA 0xb1
+0000             33   IPH0           DATA 0xb7
+0000             34   IP             DATA 0xb8
+0000             35   IPL0           DATA 0xb8
+0000             36   IPH1           DATA 0xb3
+0000             37   IPL1           DATA 0xb2
+0000             38   P0             DATA 0x80
+0000             39   P1             DATA 0x90
+0000             40   P2             DATA 0xa0
+0000             41   P3             DATA 0xb0
+0000             42   P4             DATA 0xc0
+0000             43   P0M0           DATA 0xe6
+0000             44   P0M1           DATA 0xe7
+0000             45   P1M0           DATA 0xd6
+0000             46   P1M1           DATA 0xd7
+0000             47   P2M0           DATA 0xce
+0000             48   P2M1           DATA 0xcf
+0000             49   P3M0           DATA 0xc6
+0000             50   P3M1           DATA 0xc7
+0000             51   P4M0           DATA 0xbe
+0000             52   P4M1           DATA 0xbf
+0000             53   SCON           DATA 0x98
+0000             54   SBUF           DATA 0x99
+0000             55   SADEN          DATA 0xb9
+0000             56   SADDR          DATA 0xa9
+0000             57   BDRCON         DATA 0x9b
+0000             58   BRL            DATA 0x9a
+0000             59   TCON           DATA 0x88
+0000             60   TMOD           DATA 0x89
+0000             61   TCONB          DATA 0x91
+0000             62   TL0            DATA 0x8a
+0000             63   TH0            DATA 0x8c
+0000             64   TL1            DATA 0x8b
+0000             65   TH1            DATA 0x8d
+0000             66   RL0            DATA 0xf2
+0000             67   RL1            DATA 0xf3
+0000             68   RH0            DATA 0xf4
+0000             69   RH1            DATA 0xf5
+0000             70   WDTRST         DATA 0xa6
+0000             71   WDTPRG         DATA 0xa7
+0000             72   T2CON          DATA 0xc8
+0000             73   T2MOD          DATA 0xc9
+0000             74   RCAP2H         DATA 0xcb
+0000             75   RCAP2L         DATA 0xca
+0000             76   TH2            DATA 0xcd
+0000             77   TL2            DATA 0xcc
+0000             78   SPCON          DATA 0xc3
+0000             79   SPSTA          DATA 0xc4
+0000             80   SPDAT          DATA 0xc5
+0000             81   SSCON          DATA 0x93
+0000             82   SSCS           DATA 0x94
+0000             83   SSDAT          DATA 0x95
+0000             84   SSADR          DATA 0x96
+0000             85   KBLS           DATA 0x9c
+0000             86   KBE            DATA 0x9d
+0000             87   KBF            DATA 0x9e
+0000             88   KBMOD          DATA 0x9f
+0000             89   BMSEL          DATA 0x92
+0000             90   FCON           DATA 0xd2
+0000             91   EECON          DATA 0xd2
+0000             92   ACSRA          DATA 0xa3
+0000             93   ACSRB          DATA 0xab
+0000             94   AREF           DATA 0xbd
+0000             95   DADC           DATA 0xa4
+0000             96   DADI           DATA 0xa5
+0000             97   DADL           DATA 0xac
+0000             98   DADH           DATA 0xad
+0000             99   CCON           DATA 0xd8
+0000            100   CMOD           DATA 0xd9
+0000            101   CL             DATA 0xe9
+0000            102   CH             DATA 0xf9
+0000            103   CCAPM0         DATA 0xda
+0000            104   CCAPM1         DATA 0xdb
+0000            105   CCAPM2         DATA 0xdc
+0000            106   CCAPM3         DATA 0xdd
+0000            107   CCAPM4         DATA 0xde
+0000            108   CCAP0H         DATA 0xfa
+0000            109   CCAP1H         DATA 0xfb
+0000            110   CCAP2H         DATA 0xfc
+0000            111   CCAP3H         DATA 0xfd
+0000            112   CCAP4H         DATA 0xfe
+0000            113   CCAP0L         DATA 0xea
+0000            114   CCAP1L         DATA 0xeb
+0000            115   CCAP2L         DATA 0xec
+0000            116   CCAP3L         DATA 0xed
+0000            117   CCAP4L         DATA 0xee
+0000            118   ;--------------------------------------------------------
+0000            119   ; special function bits
+0000            120   ;--------------------------------------------------------
+0000            121   P              BIT 0xd0
+0000            122   F1             BIT 0xd1
+0000            123   OV             BIT 0xd2
+0000            124   RS0            BIT 0xd3
+0000            125   RS1            BIT 0xd4
+0000            126   F0             BIT 0xd5
+0000            127   AC             BIT 0xd6
+0000            128   CY             BIT 0xd7
+0000            129   EX0            BIT 0xa8
+0000            130   ET0            BIT 0xa9
+0000            131   EX1            BIT 0xaa
+0000            132   ET1            BIT 0xab
+0000            133   ES             BIT 0xac
+0000            134   ET2            BIT 0xad
+0000            135   EC             BIT 0xae
+0000            136   EA             BIT 0xaf
+0000            137   PX0            BIT 0xb8
+0000            138   PT0            BIT 0xb9
+0000            139   PX1            BIT 0xba
+0000            140   PT1            BIT 0xbb
+0000            141   PS             BIT 0xbc
+0000            142   PT2            BIT 0xbd
+0000            143   IP0D           BIT 0xbf
+0000            144   PPCL           BIT 0xbe
+0000            145   PT2L           BIT 0xbd
+0000            146   PLS            BIT 0xbc
+0000            147   PT1L           BIT 0xbb
+0000            148   PX1L           BIT 0xba
+0000            149   PT0L           BIT 0xb9
+0000            150   PX0L           BIT 0xb8
+0000            151   RXD            BIT 0xb0
+0000            152   TXD            BIT 0xb1
+0000            153   INT0           BIT 0xb2
+0000            154   INT1           BIT 0xb3
+0000            155   T0             BIT 0xb4
+0000            156   T1             BIT 0xb5
+0000            157   WR             BIT 0xb6
+0000            158   RD             BIT 0xb7
+0000            159   RI             BIT 0x98
+0000            160   TI             BIT 0x99
+0000            161   RB8            BIT 0x9a
+0000            162   TB8            BIT 0x9b
+0000            163   REN            BIT 0x9c
+0000            164   SM2            BIT 0x9d
+0000            165   SM1            BIT 0x9e
+0000            166   SM0            BIT 0x9f
+0000            167   IT0            BIT 0x88
+0000            168   IE0            BIT 0x89
+0000            169   IT1            BIT 0x8a
+0000            170   IE1            BIT 0x8b
+0000            171   TR0            BIT 0x8c
+0000            172   TF0            BIT 0x8d
+0000            173   TR1            BIT 0x8e
+0000            174   TF1            BIT 0x8f
+0000            175   CP_RL2         BIT 0xc8
+0000            176   C_T2           BIT 0xc9
+0000            177   TR2            BIT 0xca
+0000            178   EXEN2          BIT 0xcb
+0000            179   TCLK           BIT 0xcc
+0000            180   RCLK           BIT 0xcd
+0000            181   EXF2           BIT 0xce
+0000            182   TF2            BIT 0xcf
+0000            183   CF             BIT 0xdf
+0000            184   CR             BIT 0xde
+0000            185   CCF4           BIT 0xdc
+0000            186   CCF3           BIT 0xdb
+0000            187   CCF2           BIT 0xda
+0000            188   CCF1           BIT 0xd9
+0000            189   CCF0           BIT 0xd8
+0000              2    
+0000              3   org 0000H
+0000 020399       4      ljmp MainProgram
+0003              5   
+0003              6   CLK  EQU 22118400
+0003              7   BAUD equ 115200
+0003              8   CE_ADC    EQU  P2.0 
+0003              9   MY_MOSI   EQU  P2.1  
+0003             10   MY_MISO   EQU  P2.2 
+0003             11   MY_SCLK   EQU  P2.3 
+0030             12   DSEG at 30H
+0030             13   Result: ds 2
+0032             14   x: ds 4
+0036             15   y: ds 4
+003A             16   bcd: ds 5 
+003F             17   
+0000             18   bseg 
+0000             19   mf: dbit 1
+0001             20   
+0001             21   BRG_VAL equ (0x100-(CLK/(16*BAUD)))
+0001             22   
+0003             23   CSEG
+0003             24   
+0003             25   LCD_RS equ P1.1
+0003             26   LCD_RW equ P1.2
+0003             27   LCD_E  equ P1.3
+0003             28   LCD_D4 equ P3.2
+0003             29   LCD_D5 equ P3.3
+0003             30   LCD_D6 equ P3.4
+0003             31   LCD_D7 equ P3.5
+                 33   	$LIST
+                546   $LIST
+                 36   $LIST
+0321             38   
+0321             39   
+0321             40   
+0321             41   
+0321             42   
+0321             43   
+0321             44   Delay:
+0321             45   
+0321 7A59        46       mov R2, #89
+0323 79FA        47   K3: mov R1, #250
+0325 78A6        48   K2: mov R0, #166
+0327 D8FE        49   K1: djnz R0, K1 ; 3 cycles->3*45.21123ns*166=22.51519us
+0329 D9FA        50       djnz R1, K2 ; 22.51519us*250=5.629ms
+032B DAF6        51       djnz R2, K3 ; 5.629ms*89=0.5s (approximately)
+032D 22          52       ret
+032E             53   ; Configure the serial port and baud rate
+032E             54   InitSerialPort:
+032E             55       ; Since the reset button bounces, we need to wait a bit before
+032E             56       ; sending messages, otherwise we risk displaying gibberish!
+032E 79DE        57       mov R1, #222
+0330 78A6        58       mov R0, #166
+0332 D8FE        59       djnz R0, $   ; 3 cycles->3*45.21123ns*166=22.51519us
+0334 D9FA        60       djnz R1, $-4 ; 22.51519us*222=4.998ms
+0336             61       ; Now we can proceed with the configuration
+0336 438780      62            orl     PCON,#0x80
+0339 759852      63            mov     SCON,#0x52
+033C 759B00      64            mov     BDRCON,#0x00
+033F 759AF4      65            mov     BRL,#BRG_VAL
+0342 759B1E      66            mov     BDRCON,#0x1E ; BDRCON=BRR|TBCK|RBCK|SPD;
+0345 22          67       ret
+0346             68   
+0346             69   INIT_SPI:     
+0346 D2A2        70   setb MY_MISO    ; Make MISO an input pin     
+0348 C2A3        71   clr MY_SCLK     ; For mode (0,0) SCLK is zero     
+034A 22          72   ret
+034B             73   
+034B             74   DO_SPI_G:    
+034B C0E0        75   push acc     
+034D 7900        76   mov R1, #0      ; Received byte stored in R1 
+034F 7A08        77   mov R2, #8      ; Loop counter (8-bits)
+0351             78   
+0351             79   DO_SPI_G_LOOP:     
+0351 E8          80   mov a, R0       ; Byte to write is in R0     
+0352 33          81   rlc a           ; Carry flag has bit to write    
+0353 F8          82   mov R0, a     
+0354 92A1        83   mov MY_MOSI, c  
+0356 D2A3        84   setb MY_SCLK    ; Transmit     
+0358 A2A2        85   mov c, MY_MISO  ; Read received bit
+035A E9          86   mov a, R1       ; Save received bit in R1     
+035B 33          87   rlc a     
+035C F9          88   mov R1, a     
+035D C2A3        89   clr MY_SCLK     
+035F DAF0        90   djnz R2, DO_SPI_G_LOOP 
+0361 D0E0        91   pop acc     
+0363 22          92   ret 
+0364             93   
+0364             94   getchar: 
+0364 3098FD      95   jnb RI, getchar
+0367 C298        96   clr RI 
+0369 E599        97   mov a, SBUF
+036B 22          98   ret
+036C             99   
+036C            100   
+036C            101   ; Send a character using the serial port
+036C            102   putchar:
+036C 3099FD     103       jnb TI, putchar
+036F C299       104       clr TI
+0371 F599       105       mov SBUF, a
+0373 22         106       ret
+0374            107   
+0374            108   ; Send a constant-zero-terminated string using the serial port
+0374            109   SendString:
+0374 E4         110       clr A
+0375 93         111       movc A, @A+DPTR
+0376 6006       112       jz SendStringDone
+0378 12036C     113       lcall putchar
+037B A3         114       inc DPTR
+037C 80F6       115       sjmp SendString
+037E            116   SendStringDone:
+037E 22         117       ret  
+037F            118       
+                119   Send_BCD mac
+                120   	push ar0
+                121   	mov r0, %0
+                122   	lcall ?Send_BCD
+                123   	pop ar0
+                124   	endmac
+037F            125            
+037F            126   ?Send_BCD:
+037F C0E0       127   push acc; Write most significant digit
+0381 E8         128   mov a, r0
+0382 C4         129   swap a
+0383 540F       130   anl a, #0fh
+0385 4430       131   orl a, #30h
+0387 12036C     132   lcall putchar; write least significant digit
+038A E8         133   mov a, r0
+038B 540F       134   anl a, #0fh
+038D 4430       135   orl a, #30h
+038F 12036C     136   lcall putchar
+0392 D0E0       137   pop acc
+0394 22         138   ret      
+0395            139   
+0395            140   next_line:
+0395 0A0D2000   141   db '\n','\r ',0
+0399            142   
+0399            143   MainProgram:
+0399 75817F     144       mov SP, #7FH ; Set the stack pointer to the begining of idata
+039C 12005D     145       lcall LCD_4BIT
+039F 12032E     146       lcall InitSerialPort
+03A2            147       ;mov DPTR, #Hello_World
+03A2            148       ;lcall SendString
+03A2 120346     149       lcall INIT_SPI
+03A5            150       
+03A5            151       Forever: 
+03A5 C2A0       152       clr CE_ADC 
+03A7 7801       153       mov R0, #00000001B; Start bit:1
+03A9 12034B     154       lcall DO_SPI_G
+03AC            155   
+03AC 7880       156       mov R0, #10000000B; Single ended, read channel 0 
+03AE 12034B     157       lcall DO_SPI_G 
+03B1 E9         158       mov a, R1          ; R1 contains bits 8 and 9
+03B2 5403       159       anl a, #00000011B  ; We need only the two least significant bits 
+03B4 F531       160       mov Result+1, a    ; Save result high
+03B6            161       
+03B6 7855       162       mov R0, #55H; It doesn't matter what we transmit... 
+03B8 12034B     163       lcall DO_SPI_G 
+03BB 8930       164       mov Result, R1  ; R1 contains bits 0 to 7.  Save result low. 
+03BD D2A0       165       setb CE_ADC 
+03BF 120321     166       lcall Delay
+03C2 120321     167            lcall Delay
+03C5            168            
+03C5            169            
+03C5 853032     170            mov x,Result
+03C8 853133     171            mov x+1,Result+1
+03CB 753400     172            mov x+2,#0
+03CE 753500     173            mov x+3,#0
+03D1            174   
+03D1            175            
+03D1            176   
+03D1 75369A     177            mov y+0, #low (410 % 0x10000) 
+03D4 753701     177            mov y+1, #high(410 % 0x10000) 
+03D7 753800     177            mov y+2, #low (410 / 0x10000) 
+03DA 753900     177            mov y+3, #high(410 / 0x10000) 
+03DD 12022B     178       lcall mul32
+03E0            179       
+03E0 7536FF     180            mov y+0, #low (1023 % 0x10000) 
+03E3 753703     180            mov y+1, #high(1023 % 0x10000) 
+03E6 753800     180            mov y+2, #low (1023 / 0x10000) 
+03E9 753900     180            mov y+3, #high(1023 / 0x10000) 
+03EC 1202B8     181       lcall div32
+03EF            182       
+03EF 753611     183            mov y+0, #low (273 % 0x10000) 
+03F2 753701     183            mov y+1, #high(273 % 0x10000) 
+03F5 753800     183            mov y+2, #low (273 / 0x10000) 
+03F8 753900     183            mov y+3, #high(273 / 0x10000) 
+03FB 120197     184       lcall sub32
+03FE            185            
+03FE 1200B1     186            lcall hex2bcd
+0401 C000       187            push ar0
+0403 A83B       187            mov r0, bcd+1
+0405 12037F     187            lcall ?Send_BCD
+0408 D000       187            pop ar0
+040A C000       188            push ar0
+040C A83A       188            mov r0, bcd+0
+040E 12037F     188            lcall ?Send_BCD
+0411 D000       188            pop ar0
+0413            189            
+0413            190            
+0413 900395     191            mov DPTR, #next_line
+0416 120374     192       lcall SendString
+0419            193       
+0419 808A       194       sjmp Forever
+041B 80FE       195       sjmp $ ; This is equivalent to 'forever: sjmp forever'
+041D            196       
+041D            197   END

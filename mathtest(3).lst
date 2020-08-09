@@ -1,0 +1,404 @@
+0000              1   ; mathtest.asm:  Examples using math32.asm routines
+0000              2   
+                  4   $LIST
+0000              6   
+0000              7   org 0000H
+0000 02046B       8      ljmp MyProgram
+0003              9   
+0003             10   ; These register definitions needed by 'math32.inc'
+0030             11   DSEG at 30H
+0030             12   x:   ds 4
+0034             13   y:   ds 4
+0038             14   bcd: ds 5
+003D             15   
+0000             16   BSEG
+0000             17   mf: dbit 1
+0001             18   
+                546   $LIST
+                 20   $LIST
+0273             22   
+0273             23   ; These 'equ' must match the hardware wiring
+0273             24   ; They are used by 'LCD_4bit.inc'
+0273             25   LCD_RS equ P1.1
+0273             26   LCD_RW equ P1.2
+0273             27   LCD_E  equ P1.3
+0273             28   LCD_D4 equ P3.2
+0273             29   LCD_D5 equ P3.3
+0273             30   LCD_D6 equ P3.4
+0273             31   LCD_D7 equ P3.5
+                 33   	$LIST
+0321             35   
+0321             36   CSEG
+0321             37   
+                 38   Left_blank mac
+                 39   	mov a, %0
+                 40   	anl a, #0xf0
+                 41   	swap a
+                 42   	jz Left_blank_%M_a
+                 43   	ljmp %1
+                 44   Left_blank_%M_a:
+                 45   	Display_char(#' ')
+                 46   	mov a, %0
+                 47   	anl a, #0x0f
+                 48   	jz Left_blank_%M_b
+                 49   	ljmp %1
+                 50   Left_blank_%M_b:
+                 51   	Display_char(#' ')
+                 52   endmac
+0321             53   
+0321             54   ; Sends 10-digit BCD number in bcd to the LCD
+0321             55   Display_10_digit_BCD:
+0321 C0E0        56            push acc
+0323 7407        56            mov a, #7
+0325 14          56            dec a
+0326 120304      56            lcall ?Set_Cursor_2 ; Select column and row
+0329 D0E0        56            pop acc
+032B C000        57            push ar0
+032D A83C        57            mov r0, bcd+4
+032F 12030B      57            lcall ?Display_BCD
+0332 D000        57            pop ar0
+0334 C000        58            push ar0
+0336 A83B        58            mov r0, bcd+3
+0338 12030B      58            lcall ?Display_BCD
+033B D000        58            pop ar0
+033D C000        59            push ar0
+033F A83A        59            mov r0, bcd+2
+0341 12030B      59            lcall ?Display_BCD
+0344 D000        59            pop ar0
+0346 C000        60            push ar0
+0348 A839        60            mov r0, bcd+1
+034A 12030B      60            lcall ?Display_BCD
+034D D000        60            pop ar0
+034F C000        61            push ar0
+0351 A838        61            mov r0, bcd+0
+0353 12030B      61            lcall ?Display_BCD
+0356 D000        61            pop ar0
+0358             62            ; Replace all the zeros to the left with blanks
+0358 C0E0        63            push acc
+035A 7407        63            mov a, #7
+035C 14          63            dec a
+035D 120304      63            lcall ?Set_Cursor_2 ; Select column and row
+0360 D0E0        63            pop acc
+0362 E53C        64            mov a, bcd+4
+0364 54F0        64            anl a, #0xf0
+0366 C4          64            swap a
+0367 6003        64            jz Left_blank_15_a
+0369 020406      64            ljmp skip_blank
+036C             64   Left_blank_15_a:
+036C C0E0        64            push acc
+036E 7420        64            mov a, #' '
+0370 1202C3      64            lcall ?WriteData
+0373 D0E0        64            pop acc
+0375 E53C        64            mov a, bcd+4
+0377 540F        64            anl a, #0x0f
+0379 6003        64            jz Left_blank_15_b
+037B 020406      64            ljmp skip_blank
+037E             64   Left_blank_15_b:
+037E C0E0        64            push acc
+0380 7420        64            mov a, #' '
+0382 1202C3      64            lcall ?WriteData
+0385 D0E0        64            pop acc
+0387 E53B        65            mov a, bcd+3
+0389 54F0        65            anl a, #0xf0
+038B C4          65            swap a
+038C 6003        65            jz Left_blank_18_a
+038E 020406      65            ljmp skip_blank
+0391             65   Left_blank_18_a:
+0391 C0E0        65            push acc
+0393 7420        65            mov a, #' '
+0395 1202C3      65            lcall ?WriteData
+0398 D0E0        65            pop acc
+039A E53B        65            mov a, bcd+3
+039C 540F        65            anl a, #0x0f
+039E 6003        65            jz Left_blank_18_b
+03A0 020406      65            ljmp skip_blank
+03A3             65   Left_blank_18_b:
+03A3 C0E0        65            push acc
+03A5 7420        65            mov a, #' '
+03A7 1202C3      65            lcall ?WriteData
+03AA D0E0        65            pop acc
+03AC E53A        66            mov a, bcd+2
+03AE 54F0        66            anl a, #0xf0
+03B0 C4          66            swap a
+03B1 6003        66            jz Left_blank_21_a
+03B3 020406      66            ljmp skip_blank
+03B6             66   Left_blank_21_a:
+03B6 C0E0        66            push acc
+03B8 7420        66            mov a, #' '
+03BA 1202C3      66            lcall ?WriteData
+03BD D0E0        66            pop acc
+03BF E53A        66            mov a, bcd+2
+03C1 540F        66            anl a, #0x0f
+03C3 6003        66            jz Left_blank_21_b
+03C5 020406      66            ljmp skip_blank
+03C8             66   Left_blank_21_b:
+03C8 C0E0        66            push acc
+03CA 7420        66            mov a, #' '
+03CC 1202C3      66            lcall ?WriteData
+03CF D0E0        66            pop acc
+03D1 E539        67            mov a, bcd+1
+03D3 54F0        67            anl a, #0xf0
+03D5 C4          67            swap a
+03D6 6003        67            jz Left_blank_24_a
+03D8 020406      67            ljmp skip_blank
+03DB             67   Left_blank_24_a:
+03DB C0E0        67            push acc
+03DD 7420        67            mov a, #' '
+03DF 1202C3      67            lcall ?WriteData
+03E2 D0E0        67            pop acc
+03E4 E539        67            mov a, bcd+1
+03E6 540F        67            anl a, #0x0f
+03E8 6003        67            jz Left_blank_24_b
+03EA 020406      67            ljmp skip_blank
+03ED             67   Left_blank_24_b:
+03ED C0E0        67            push acc
+03EF 7420        67            mov a, #' '
+03F1 1202C3      67            lcall ?WriteData
+03F4 D0E0        67            pop acc
+03F6 E538        68            mov a, bcd+0
+03F8 54F0        69            anl a, #0f0h
+03FA C4          70            swap a
+03FB 7009        71            jnz skip_blank
+03FD C0E0        72            push acc
+03FF 7420        72            mov a, #' '
+0401 1202C3      72            lcall ?WriteData
+0404 D0E0        72            pop acc
+0406             73   skip_blank:
+0406 22          74            ret
+0407             75   
+0407             76   ; We can display a number any way we want.  In this case with
+0407             77   ; four decimal places.
+0407             78   Display_formated_BCD:
+0407 C0E0        79            push acc
+0409 7407        79            mov a, #7
+040B 14          79            dec a
+040C 120304      79            lcall ?Set_Cursor_2 ; Select column and row
+040F D0E0        79            pop acc
+0411 C0E0        80            push acc
+0413 7420        80            mov a, #' '
+0415 1202C3      80            lcall ?WriteData
+0418 D0E0        80            pop acc
+041A C000        81            push ar0
+041C A83B        81            mov r0, bcd+3
+041E 12030B      81            lcall ?Display_BCD
+0421 D000        81            pop ar0
+0423 C000        82            push ar0
+0425 A83A        82            mov r0, bcd+2
+0427 12030B      82            lcall ?Display_BCD
+042A D000        82            pop ar0
+042C C0E0        83            push acc
+042E 742E        83            mov a, #'.'
+0430 1202C3      83            lcall ?WriteData
+0433 D0E0        83            pop acc
+0435 C000        84            push ar0
+0437 A839        84            mov r0, bcd+1
+0439 12030B      84            lcall ?Display_BCD
+043C D000        84            pop ar0
+043E C000        85            push ar0
+0440 A838        85            mov r0, bcd+0
+0442 12030B      85            lcall ?Display_BCD
+0445 D000        85            pop ar0
+0447 22          86            ret
+0448             87   
+0448             88   wait_for_P4_5:
+0448 20C5FD      89            jb P4.5, $ ; loop while the button is not pressed
+044B C002        90            push AR2
+044D 7A32        90            mov R2, #50
+044F 12027E      90            lcall ?Wait_Milli_Seconds
+0452 D002        90            pop AR2 ; debounce time
+0454 20C5F1      91            jb P4.5, wait_for_P4_5 ; it was a bounce, try again
+0457 30C5FD      92            jnb P4.5, $ ; loop while the button is pressed
+045A 22          93            ret
+045B             94   
+045B 54657374    95   Test_msg:  db 'Test xx answer:', 0
+     20787820
+     616E7377
+     65723A00
+046B             96   
+046B             97   MyProgram:
+046B 75817F      98            mov sp, #07FH ; Initialize the stack pointer
+046E             99            ; Configure P0 in bidirectional mode
+046E 75E600     100       mov P0M0, #0
+0471 75E700     101       mov P0M1, #0
+0474 1202CD     102       lcall LCD_4BIT
+0477 C0E0       103            push acc
+0479 7401       103            mov a, #1
+047B 14         103            dec a
+047C 120306     103            lcall ?Set_Cursor_1 ; Select column and row
+047F D0E0       103            pop acc
+0481 C083       104            push dph
+0483 C082       104            push dpl
+0485 C0E0       104            push acc
+0487 90045B     104            mov dptr, #Test_msg
+048A 1202F9     104            lcall ?Send_Constant_String
+048D D0E0       104            pop acc
+048F D082       104            pop dpl
+0491 D083       104            pop dph
+0493            105   
+0493            106   Forever:
+0493            107            ; Test 1
+0493 C0E0       108            push acc
+0495 7406       108            mov a, #6
+0497 14         108            dec a
+0498 120306     108            lcall ?Set_Cursor_1 ; Select column and row
+049B D0E0       108            pop acc
+049D C000       109            push ar0
+049F 7801       109            mov r0, #0x01
+04A1 12030B     109            lcall ?Display_BCD
+04A4 D000       109            pop ar0 ; LCD line 1 should say now 'Test 01 answer:'
+04A6            110            ; Try multiplying 1234 x 4567 = 5635678
+04A6 7530D2     111            mov x+0, #low(1234)
+04A9 753104     112            mov x+1, #high(1234)
+04AC 753200     113            mov x+2, #0
+04AF 753300     114            mov x+3, #0
+04B2 7534D7     115            mov y+0, #low(4567)
+04B5 753511     116            mov y+1, #high(4567)
+04B8 753600     117            mov y+2, #0
+04BB 753700     118            mov y+3, #0
+04BE            119            ; mul32 and hex2bcd are in math32.asm
+04BE 12017D     120            lcall mul32
+04C1 120003     121            lcall hex2bcd
+04C4            122            ; display the result
+04C4 120321     123            lcall Display_10_digit_BCD
+04C7            124            ; Now wait for key1 to be pressed and released so we can see the result.
+04C7 120448     125            lcall wait_for_P4_5
+04CA            126            
+04CA            127            ; Test 2
+04CA C0E0       128            push acc
+04CC 7406       128            mov a, #6
+04CE 14         128            dec a
+04CF 120306     128            lcall ?Set_Cursor_1 ; Select column and row
+04D2 D0E0       128            pop acc;
+04D4 C000       129            push ar0
+04D6 7802       129            mov r0, #0x02
+04D8 12030B     129            lcall ?Display_BCD
+04DB D000       129            pop ar0
+04DD            130            ; There are macros defined in math32.asm that can be used to load constants
+04DD            131            ; to variables x and y. The same code above may be written as:
+04DD 7530D2     132            mov x+0, #low (1234 % 0x10000) 
+04E0 753104     132            mov x+1, #high(1234 % 0x10000) 
+04E3 753200     132            mov x+2, #low (1234 / 0x10000) 
+04E6 753300     132            mov x+3, #high(1234 / 0x10000) 
+04E9 7534D7     133            mov y+0, #low (4567 % 0x10000) 
+04EC 753511     133            mov y+1, #high(4567 % 0x10000) 
+04EF 753600     133            mov y+2, #low (4567 / 0x10000) 
+04F2 753700     133            mov y+3, #high(4567 / 0x10000) 
+04F5 12017D     134            lcall mul32
+04F8 120003     135            lcall hex2bcd
+04FB 120321     136            lcall Display_10_digit_BCD
+04FE 120448     137            lcall wait_for_P4_5
+0501            138            
+0501            139            ; Test 3
+0501 C0E0       140            push acc
+0503 7406       140            mov a, #6
+0505 14         140            dec a
+0506 120306     140            lcall ?Set_Cursor_1 ; Select column and row
+0509 D0E0       140            pop acc;
+050B C000       141            push ar0
+050D 7803       141            mov r0, #0x03
+050F 12030B     141            lcall ?Display_BCD
+0512 D000       141            pop ar0
+0514            142            ; Try dividing 5635678 / 1234 = 4567
+0514 75305E     143            mov x+0, #low (5635678 % 0x10000) 
+0517 7531FE     143            mov x+1, #high(5635678 % 0x10000) 
+051A 753255     143            mov x+2, #low (5635678 / 0x10000) 
+051D 753300     143            mov x+3, #high(5635678 / 0x10000) 
+0520 7534D2     144            mov y+0, #low (1234 % 0x10000) 
+0523 753504     144            mov y+1, #high(1234 % 0x10000) 
+0526 753600     144            mov y+2, #low (1234 / 0x10000) 
+0529 753700     144            mov y+3, #high(1234 / 0x10000) 
+052C 12020A     145            lcall div32 ; This subroutine is in math32.asm
+052F 120003     146            lcall hex2bcd
+0532 120321     147            lcall Display_10_digit_BCD
+0535 120448     148            lcall wait_for_P4_5
+0538            149   
+0538            150            ; Test 4
+0538 C0E0       151            push acc
+053A 7406       151            mov a, #6
+053C 14         151            dec a
+053D 120306     151            lcall ?Set_Cursor_1 ; Select column and row
+0540 D0E0       151            pop acc;
+0542 C000       152            push ar0
+0544 7804       152            mov r0, #0x04
+0546 12030B     152            lcall ?Display_BCD
+0549 D000       152            pop ar0
+054B            153            ; Try adding 1234 + 4567 = 5801
+054B 7530D2     154            mov x+0, #low (1234 % 0x10000) 
+054E 753104     154            mov x+1, #high(1234 % 0x10000) 
+0551 753200     154            mov x+2, #low (1234 / 0x10000) 
+0554 753300     154            mov x+3, #high(1234 / 0x10000) 
+0557 7534D7     155            mov y+0, #low (4567 % 0x10000) 
+055A 753511     155            mov y+1, #high(4567 % 0x10000) 
+055D 753600     155            mov y+2, #low (4567 / 0x10000) 
+0560 753700     155            mov y+3, #high(4567 / 0x10000) 
+0563 1200C8     156            lcall add32 ; This subroutine is in math32.asm
+0566 120003     157            lcall hex2bcd
+0569 120321     158            lcall Display_10_digit_BCD
+056C 120448     159            lcall wait_for_P4_5
+056F            160   
+056F            161            ; Test 5
+056F C0E0       162            push acc
+0571 7406       162            mov a, #6
+0573 14         162            dec a
+0574 120306     162            lcall ?Set_Cursor_1 ; Select column and row
+0577 D0E0       162            pop acc;
+0579 C000       163            push ar0
+057B 7805       163            mov r0, #0x05
+057D 12030B     163            lcall ?Display_BCD
+0580 D000       163            pop ar0
+0582            164            ; Try subtracting 4567 - 1234 = 3333
+0582 7530D7     165            mov x+0, #low (4567 % 0x10000) 
+0585 753111     165            mov x+1, #high(4567 % 0x10000) 
+0588 753200     165            mov x+2, #low (4567 / 0x10000) 
+058B 753300     165            mov x+3, #high(4567 / 0x10000) 
+058E 7534D2     166            mov y+0, #low (1234 % 0x10000) 
+0591 753504     166            mov y+1, #high(1234 % 0x10000) 
+0594 753600     166            mov y+2, #low (1234 / 0x10000) 
+0597 753700     166            mov y+3, #high(1234 / 0x10000) 
+059A 1200E9     167            lcall sub32 ; This subroutine is in math32.asm
+059D 120003     168            lcall hex2bcd
+05A0 120321     169            lcall Display_10_digit_BCD
+05A3 120448     170            lcall wait_for_P4_5
+05A6            171            
+05A6            172            ; Test 6
+05A6 C0E0       173            push acc
+05A8 7406       173            mov a, #6
+05AA 14         173            dec a
+05AB 120306     173            lcall ?Set_Cursor_1 ; Select column and row
+05AE D0E0       173            pop acc;
+05B0 C000       174            push ar0
+05B2 7806       174            mov r0, #0x06
+05B4 12030B     174            lcall ?Display_BCD
+05B7 D000       174            pop ar0
+05B9            175            ; Ok, that was easy.  Try computing the area of circle
+05B9            176            ; with a radius of 23.2.  Remember we are working with
+05B9            177            ; usigned 32-bit integers here, so there is the risk
+05B9            178            ; of overflow, in particular when multiplying big numbers.
+05B9            179            ; One trick you may use: approximate pi to 355/113.
+05B9 7530E8     180            mov x+0, #low (232 % 0x10000) 
+05BC 753100     180            mov x+1, #high(232 % 0x10000) 
+05BF 753200     180            mov x+2, #low (232 / 0x10000) 
+05C2 753300     180            mov x+3, #high(232 / 0x10000) 
+05C5 7534E8     181            mov y+0, #low (232 % 0x10000) 
+05C8 753500     181            mov y+1, #high(232 % 0x10000) 
+05CB 753600     181            mov y+2, #low (232 / 0x10000) 
+05CE 753700     181            mov y+3, #high(232 / 0x10000) 
+05D1 12017D     182            lcall mul32 ; Result is stored in x
+05D4            183            ; Now multiply by pi
+05D4 7534AC     184            mov y+0, #low (35500 % 0x10000) 
+05D7 75358A     184            mov y+1, #high(35500 % 0x10000) 
+05DA 753600     184            mov y+2, #low (35500 / 0x10000) 
+05DD 753700     184            mov y+3, #high(35500 / 0x10000) 
+05E0 12017D     185            lcall mul32
+05E3 753471     186            mov y+0, #low (113 % 0x10000) 
+05E6 753500     186            mov y+1, #high(113 % 0x10000) 
+05E9 753600     186            mov y+2, #low (113 / 0x10000) 
+05EC 753700     186            mov y+3, #high(113 / 0x10000) 
+05EF 12020A     187            lcall div32
+05F2 120003     188            lcall hex2bcd
+05F5 120407     189            lcall Display_formated_BCD ; result should be 1690.9309
+05F8 120448     190            lcall wait_for_P4_5
+05FB            191            
+05FB 020493     192            ljmp Forever
+05FE            193            
+05FE            194   END
